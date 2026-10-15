@@ -12,12 +12,15 @@ The official WordPress Playground VS Code extension runs WordPress. This framewo
 - [Architecture, boundaries and limitations](docs/architecture.md)
 - [Validation and contributing](docs/contributing.md)
 
-Supported host: macOS or Linux (Windows through WSL), Git, Python 3.9+, PHP 8+ with ZipArchive, curl and unzip. Packaging setup also needs PHP's HTTP/Composer dependencies, including curl. Install the official `WordPressPlayground.wordpress-playground` extension in VS Code. Its PHP runtime is separate from the host PHP used for packaging.
+Supported host: macOS or Linux (Windows through WSL), Git, Node.js 22+, PHP 8+ with ZipArchive, curl and unzip. Packaging setup also needs PHP's HTTP/Composer dependencies, including curl. Install the official `WordPressPlayground.wordpress-playground` extension in VS Code. Its PHP runtime is separate from the host PHP used for packaging.
+
+Open `wordpress-playground.code-workspace` to work on this framework. For your own project, copy the starter `setup.code-workspace` as described in the creation guide and run **Workspace: Set up**. Both recommend the required Playground extension before setup. No Python or JavaScript package installation is needed.
 
 ## The boundary
 
 ```text
 project-workspace/                 # Your project's repository
+├── setup.code-workspace           # Committed setup tasks and extension recommendations
 ├── workspace.json                 # Your component definitions
 ├── tools/wordpress-playground/    # This repository, pinned submodule
 ├── sources/                      # Separate component repos/submodules
@@ -34,15 +37,15 @@ Run these from your project workspace after following the creation guide:
 
 ```sh
 sh tools/wordpress-playground/scripts/setup-packaging.sh
-python3 tools/wordpress-playground/scripts/workspace.py validate workspace.json
-python3 tools/wordpress-playground/scripts/workspace.py prepare workspace.json
+node tools/wordpress-playground/scripts/workspace.mjs validate workspace.json
+node tools/wordpress-playground/scripts/workspace.mjs prepare workspace.json
 ```
 
 Open `wordpress.generated.code-workspace`. Start WordPress through the extension sidebar. Select a PHP version compatible with your components (8.3 is a reasonable starting point). Use **Terminal → Run Task** or **Tasks: Run Task** in the Command Palette to package the listed components.
 
 ## Versioning
 
-Current framework release: `v0.2.0`. Workspace configuration schema: `1`.
+Current framework release: `v0.3.0`. Workspace configuration schema: `1`.
 
 This is a framework/module repository, **not a GitHub template repository**. Projects pin its commit and review upgrades explicitly. A future starter template may copy only project-owned configuration, never the framework implementation.
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.3.0
+
+- Add checked-in framework and project setup workspaces with Playground extension recommendations.
+- Provide ordered VS Code setup tasks and explicit host/extension requirements.
+- Replace Python setup and tests with dependency-free JavaScript (Node.js 22+); npm test runs the suite without installing packages.
+- Preserve schema 1 and the v0.2.0 runtime path. See the update guide for replacing generated tasks.
+
 ## 0.2.0 — 2026-10-15
 
 - Remove the mandatory baseline theme from configuration, preparation and the creation guide.

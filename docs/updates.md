@@ -12,8 +12,8 @@ git -C tools/wordpress-playground fetch origin --tags
 # Review the selected release's changelog and migrations first.
 git -C tools/wordpress-playground checkout vX.Y.Z
 sh tools/wordpress-playground/scripts/setup-packaging.sh
-python3 tools/wordpress-playground/scripts/workspace.py validate workspace.json
-python3 tools/wordpress-playground/scripts/workspace.py prepare workspace.json
+node tools/wordpress-playground/scripts/workspace.mjs validate workspace.json
+node tools/wordpress-playground/scripts/workspace.mjs prepare workspace.json
 git add tools/wordpress-playground
 git commit -m "Update WordPress framework to vX.Y.Z"
 ```
@@ -29,7 +29,7 @@ If an isolated project commit only updates the framework submodule, revert that 
 ```sh
 git revert FRAMEWORK_UPDATE_COMMIT
 git submodule update --init --recursive
-python3 tools/wordpress-playground/scripts/workspace.py prepare workspace.json
+# Use the prepare command documented in the restored release.
 ```
 
 If the upgrade also changed your manifest schema, revert/migrate that project configuration deliberately. Git rollback does not restore database migrations performed by component plugins. Preserve site backups independently.
@@ -53,3 +53,7 @@ References: https://docs.github.com/en/repositories/creating-and-managing-reposi
 ## Migrating v0.1.0 to v0.2.0
 
 v0.2.0 removes the baseline-theme dependency and uses a normal WordPress installation. Remove baseline-only theme entries/submodules from your project if you do not develop them. Keep any actual theme-development entries. The generated first folder changes from `.playground/wp-content` to `.playground/wordpress`; this initializes a separate installation and may select a new extension database. Existing v0.1.0 files/database are not deleted or migrated. Export any content you need through native WordPress tools and back up before switching; import into the new installation deliberately. Run setup before prepare, then reopen the generated workspace.
+
+## Migrating v0.2.0 to v0.3.0
+
+Install Node.js 22+; Python is no longer used. The manifest schema and runtime location remain unchanged. After updating the submodule, copy `tools/wordpress-playground/examples/setup.code-workspace` to your project root if it does not already exist. Review differences instead of overwriting a customized setup workspace. Open it and run **Workspace: Set up** with Playground stopped, then reopen the generated workspace to replace old Python tasks. Commit the starter workspace with the submodule update. Existing source and site content are preserved. Copied starter tasks are project-owned; review changes to the example when upgrading.

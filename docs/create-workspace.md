@@ -2,6 +2,12 @@
 
 No baseline theme repository or theme configuration is required. Native WP-CLI downloads a standard WordPress installation, including its bundled themes. The VS Code Playground extension runs that installation. An empty component list is valid; add only the plugins or themes you actually develop.
 
+## Requirements
+
+Install VS Code desktop and the official **WordPress Playground** extension (`WordPressPlayground.wordpress-playground`). The checked-in setup workspace recommends it before any setup runs. Open Extensions and search `@recommended` to install it; recommendations do not install extensions automatically.
+
+The host needs Git, **Node.js 22+**, **PHP 8+ with ZipArchive and curl**, command-line curl and unzip. Supported hosts are macOS and Linux (Windows through WSL). Playground's PHP runtime does not replace host PHP. No Python, npm install, pnpm install, or third-party JavaScript packages are required. First setup downloads WP-CLI and WordPress and needs internet access.
+
 ## 1. Create the project and pin the framework
 
 Choose a new directory, separate from the framework checkout and any existing site:
@@ -11,9 +17,10 @@ mkdir my-wordpress-workspace
 cd my-wordpress-workspace
 git init -b main
 git submodule add https://github.com/OpenWorkingGroup/wordpress-playground.git tools/wordpress-playground
-git -C tools/wordpress-playground checkout v0.2.0
+git -C tools/wordpress-playground checkout v0.3.0
 cp tools/wordpress-playground/examples/workspace.gitignore .gitignore
 cp tools/wordpress-playground/examples/workspace.json workspace.json
+cp tools/wordpress-playground/examples/setup.code-workspace setup.code-workspace
 ```
 
 The starter configuration is simply:
@@ -22,15 +29,21 @@ The starter configuration is simply:
 {"schema": 1, "components": []}
 ```
 
-## 2. Prepare standard WordPress and open VS Code
+## 2. Run setup in VS Code
+
+Open `setup.code-workspace` using **File → Open Workspace from File** (or `code setup.code-workspace`). Install the recommended Playground extension.
+
+Choose **Terminal → Run Task → Workspace: Set up**, or open the Command Palette and select **Tasks: Run Task**. The task runs three visible steps in order: validate your configuration, set up WP-CLI, then prepare standard WordPress. A failure stops the sequence; fix the reported prerequisite and rerun the task.
+
+When it finishes, open `wordpress.generated.code-workspace`. **Start Playground only in this generated workspace**, whose first folder is the prepared WordPress installation. The setup workspace is for setup, not running a site. Select a compatible PHP version such as 8.3 in the Playground sidebar and start its server. Use its reported address and credentials.
+
+Terminal equivalent, if preferred:
 
 ```sh
+node tools/wordpress-playground/scripts/workspace.mjs validate workspace.json
 sh tools/wordpress-playground/scripts/setup-packaging.sh
-python3 tools/wordpress-playground/scripts/workspace.py prepare workspace.json
-code wordpress.generated.code-workspace
+node tools/wordpress-playground/scripts/workspace.mjs prepare workspace.json
 ```
-
-If `code` is unavailable, use VS Code's **File → Open Workspace from File**. The generated workspace puts `.playground/wordpress` first. Open the official Playground sidebar, select a compatible PHP version such as 8.3, and start its WordPress server. Use its reported address and credentials.
 
 Preparation downloads WordPress only when no installation exists. Subsequent preparation preserves core, bundled themes, installed components, uploads and settings. `wordpress_version` is an optional manifest field for a specific initial numeric core release; the default is `latest`. Changing that field does not upgrade an existing installation. In full WordPress mode the mounted core files determine the WordPress version, not the sidebar's download selection.
 
@@ -62,7 +75,7 @@ Stop the extension server, run `prepare` again, reopen the generated workspace i
 ## 4. Commit project configuration
 
 ```sh
-git add .gitignore .gitmodules workspace.json tools/wordpress-playground
+git add .gitignore .gitmodules workspace.json setup.code-workspace tools/wordpress-playground
 git commit -m "Create component development workspace"
 ```
 
@@ -73,8 +86,11 @@ After cloning this project on another machine:
 ```sh
 git clone --recurse-submodules YOUR_PROJECT_REPOSITORY
 cd YOUR_PROJECT_DIRECTORY
-sh tools/wordpress-playground/scripts/setup-packaging.sh
-python3 tools/wordpress-playground/scripts/workspace.py prepare workspace.json
+code setup.code-workspace
 ```
 
+Run **Workspace: Set up**, then open the generated workspace.
+
 You choose the project's GitHub name and visibility independently. None of these commands pushes the workspace or changes a separate site environment. See [updates](updates.md) for migration from v0.1.0.
+
+VS Code references: [workspace extension recommendations](https://code.visualstudio.com/docs/editing/workspaces/multi-root-workspaces) and [ordered tasks](https://code.visualstudio.com/docs/debugtest/tasks).

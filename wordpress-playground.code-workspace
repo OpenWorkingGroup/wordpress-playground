@@ -1,0 +1,11 @@
+{
+  "folders": [{ "name": "Framework", "path": "." }],
+  "extensions": { "recommendations": ["WordPressPlayground.wordpress-playground"] },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      { "label": "Framework: Set up WP-CLI", "type": "process", "command": "sh", "args": ["${workspaceFolder:Framework}/scripts/setup-packaging.sh"], "problemMatcher": [] },
+      { "label": "Framework: Test", "type": "process", "command": "npm", "args": ["test"], "options": {"cwd": "${workspaceFolder:Framework}"}, "dependsOn": ["Framework: Set up WP-CLI"], "problemMatcher": [] }
+    ]
+  }
+}

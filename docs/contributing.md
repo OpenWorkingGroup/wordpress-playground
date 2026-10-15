@@ -2,7 +2,7 @@
 
 ```sh
 sh scripts/setup-packaging.sh
-python3 -m unittest discover -s tests -v
+npm test
 php -l scripts/archive-check.php
 sh -n scripts/setup-packaging.sh
 sh -n scripts/package-extension.sh

@@ -1,6 +1,6 @@
 # Daily workflow
 
-1. Edit the source repository shown in VS Code, not `.playground/wp-content`.
+1. Edit the source repository shown in VS Code, not `.playground/wordpress/wp-content`.
 2. Run the component's own build/tests if it has npm, Composer or other requirements. The framework does not guess or execute project-supplied build commands.
 3. Stop the Playground server in the extension sidebar.
 4. Run **Workspace: Refresh copies (stop Playground first)**, or the `prepare` command from the creation guide.

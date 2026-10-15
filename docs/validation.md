@@ -1,3 +1,9 @@
+# Validation — v0.3.0
+
+All 14 JavaScript tests pass locally on Node.js 22, including real WP-CLI plugin/theme packaging, checksum and exclusion checks, safe refresh/removal, empty/plugin-only workspaces, task ordering, and linked paths containing spaces. A fresh empty workspace downloaded standard WordPress with bundled themes. The exact starter task commands were run in sequence and repeated successfully. No npm dependencies or Python are needed.
+
+VS Code recommendation prompts, task UI and extension startup still require manual acceptance. The commands were rehearsed outside VS Code; no existing user environment was changed. CI results are separate from these local checks.
+
 # Validation — v0.2.0
 
 All 11 local automated tests pass, including empty and plugin-only workspaces and preservation of bundled themes. A fresh empty workspace downloaded WordPress 7.1.3 with its bundled themes through native WP-CLI and generated the full-installation workspace successfully. Repeated preparation preserved the installation. The download command allows 512 MB for archive extraction. Shell syntax checks pass.
