@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.0
+
+- Install into an existing Git project with one submodule-add command followed by the included Project: Set up task.
+- Automate release pinning and starter configuration creation; preserve existing project files and refuse conflicting formats or dirty framework checkouts.
+- Create sources/ with a Git placeholder when missing; allow component paths elsewhere in the project.
+- Keep project creation and repository initialization outside framework setup.
+
 ## v0.3.0
 
 - Add checked-in framework and project setup workspaces with Playground extension recommendations.

@@ -57,3 +57,7 @@ v0.2.0 removes the baseline-theme dependency and uses a normal WordPress install
 ## Migrating v0.2.0 to v0.3.0
 
 Install Node.js 22+; Python is no longer used. The manifest schema and runtime location remain unchanged. After updating the submodule, copy `tools/wordpress-playground/examples/setup.code-workspace` to your project root if it does not already exist. Review differences instead of overwriting a customized setup workspace. Open it and run **Workspace: Set up** with Playground stopped, then reopen the generated workspace to replace old Python tasks. Commit the starter workspace with the submodule update. Existing source and site content are preserved. Copied starter tasks are project-owned; review changes to the example when upgrading.
+
+## Migrating v0.3.0 to v0.4.0
+
+The existing manifest and runtime are compatible. After updating the framework submodule, open its `wordpress-playground.code-workspace` and run **Project: Set up**. It creates missing project files and `sources/`, preserves existing ones, and pins/stages the release reference. Existing project setup tasks continue to work. Older copied ignore files may contain `/sources/*`; review that rule if you want to track source directly. The new installer does not add it or remove your existing rules. No new project directory or repository is required.

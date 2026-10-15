@@ -1,3 +1,7 @@
+# Validation — v0.4.0
+
+All 18 local JavaScript tests pass. Added isolated Git-submodule fixtures verify release pinning (including staging the pinned reference), repeatable installation into an existing project, sources directory creation, preservation of existing sources/configuration/ignore rules, and refusal of incompatible configuration or dirty framework checkouts. The previous real WP-CLI archive tests continue to pass. VS Code UI execution remains a manual check.
+
 # Validation — v0.3.0
 
 All 14 JavaScript tests pass locally on Node.js 22, including real WP-CLI plugin/theme packaging, checksum and exclusion checks, safe refresh/removal, empty/plugin-only workspaces, task ordering, and linked paths containing spaces. A fresh empty workspace downloaded standard WordPress with bundled themes. The exact starter task commands were run in sequence and repeated successfully. No npm dependencies or Python are needed.
