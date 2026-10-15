@@ -21,6 +21,7 @@ themes/
   twentytwentyfive/        # Optional local install through WordPress; ignored by Git
   my-theme/               # Optional custom theme repository
 .vscode/                  # Extension recommendation and packaging task
+tooling/                  # Packaging scripts, tests, docs and ignored build tools
 ```
 
 No theme is bundled or maintained here. The extension’s `wp-content` mode hides the themes in its WordPress download, so a fresh checkout starts without a theme. Theme installation is optional: WordPress admin and backend plugin development work without one. The public homepage may report a missing theme until you install and activate a theme for frontend testing. Installed themes stay locally in `themes/` and are updated through WordPress. Core, themes, uploads, and the database are not committed. See [WordPress’s native theme installation instructions](https://wordpress.org/documentation/article/work-with-themes/).
@@ -42,9 +43,9 @@ Component clones are ignored by the starter repository and keep their own Git hi
 
 ## Package for installation on another site
 
-Add a reviewed `.distignore` to the component root; `tools/packaging/distignore.example` is a starting point. Keep runtime assets and required vendor files.
+Add a reviewed `.distignore` to the component root; `tooling/packaging/distignore.example` is a starting point. Keep runtime assets and required vendor files.
 
-Choose **Terminal → Run Task → Package component**, select plugin/theme, and enter its folder (for example `plugins/my-plugin`). The task prepares pinned WP-CLI tooling automatically on first use and writes an installable ZIP plus checksum under `dist/`.
+Choose **Terminal → Run Task → Package component**, select plugin/theme, and enter its folder (for example `plugins/my-plugin`). The task prepares pinned WP-CLI tooling automatically on first use and writes an installable ZIP plus checksum under `tooling/dist/`.
 
 Packaging requires host PHP 8+ with ZipArchive and curl, command-line curl, and a POSIX shell (macOS/Linux, or Windows through WSL). It uses official WP-CLI `dist-archive`; it does not start another server or deploy anything. Install the ZIP manually on the separate SYVLocal integration site.
 
@@ -63,3 +64,5 @@ Validated against extension 0.1.72. It chooses an available port and may listen 
 Original starter tooling is MIT licensed. Themes installed separately retain their upstream licenses. This is an independent starter, not the official Playground project.
 
 References: [official extension documentation](https://developer.wordpress.org/playground/developers/local-development/vscode-extension/) · [GitHub templates](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+
+Supporting documentation, release history, and the starter version are under `tooling/`. Packaging tools are downloaded into ignored `tooling/.tools/`; archives go to ignored `tooling/dist/`. Older root-level `.tools/` and `dist/` folders remain ignored and are not automatically deleted or moved by a pull.

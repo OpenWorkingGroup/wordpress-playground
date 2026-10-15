@@ -10,4 +10,4 @@ No setup command, Git initialization, baseline-theme checkout, or file-copy step
 
 Clone plugin repositories directly into `plugins/my-plugin`, then activate them in WordPress. Clone custom themes into `themes/my-theme`.
 
-See the [README](../README.md) for the complete short workflow, packaging, and template update behavior. Existing v0.4.x framework installations are not automatically migrated; use a fresh standalone clone.
+See the [README](../../README.md) for the complete short workflow, packaging, and template update behavior. Existing v0.4.x framework installations are not automatically migrated; use a fresh standalone clone.

@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.2.0
+
+- Move packaging scripts, supporting documentation, tests, release metadata, and packaging configuration under tooling/.
+- Keep plugins/, themes/, README, LICENSE, and required hidden GitHub/VS Code configuration at the root.
+- Update packaging tasks and CI paths; new caches and artifacts use tooling/.tools/ and tooling/dist/.
+- Existing local caches/artifacts at the old paths are left intact and ignored.
+
 ## v1.1.0
 
 - Remove the redundant .code-workspace file; open the folder directly using .vscode recommendations and packaging tasks.

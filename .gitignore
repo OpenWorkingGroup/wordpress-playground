@@ -1,5 +1,5 @@
-/.tools/
-/dist/
+/tooling/.tools/
+/tooling/dist/
 /uploads/
 /database/
 /upgrade/
@@ -13,3 +13,7 @@
 .env
 .env.*
 *.log
+
+# Legacy local outputs from earlier starter versions (not migrated automatically).
+/.tools/
+/dist/

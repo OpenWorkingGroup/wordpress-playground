@@ -6,8 +6,8 @@ php_bin=${PHP_BIN:-php}
 mkdir -p "$root/.tools/wp-cli"
 export WP_CLI_PACKAGES_DIR="$root/.tools/wp-cli/packages"
 export WP_CLI_CACHE_DIR="$root/.tools/wp-cli/cache"
-export WP_CLI_CONFIG_PATH="$root/tools/packaging/wp-cli.yml"
-cd "$root/tools/packaging"
+export WP_CLI_CONFIG_PATH="$root/packaging/wp-cli.yml"
+cd "$root/packaging"
 if [ ! -f "$root/.tools/wp-cli/wp-cli.phar" ]; then
  curl --fail --location --silent --show-error https://github.com/wp-cli/wp-cli/releases/download/v2.12.0/wp-cli-2.12.0.phar -o "$root/.tools/wp-cli/wp-cli.phar.download"
  mv "$root/.tools/wp-cli/wp-cli.phar.download" "$root/.tools/wp-cli/wp-cli.phar"
