@@ -21,7 +21,7 @@ themes/
   twentytwentyfive/        # Optional local install through WordPress; ignored by Git
   my-theme/               # Optional custom theme repository
 .vscode/                  # Extension recommendation and packaging task
-tools/                  # Packaging scripts, tests, docs and ignored build tools
+tools/                  # Packaging scripts, tests and ignored build tools
 ```
 
 No theme is bundled or maintained here. The extension’s `wp-content` mode hides the themes in its WordPress download, so a fresh checkout starts without a theme. Theme installation is optional: WordPress admin and backend plugin development work without one. The public homepage may report a missing theme until you install and activate a theme for frontend testing. Installed themes stay locally in `themes/` and are updated through WordPress. Core, themes, uploads, and the database are not committed. See [WordPress’s native theme installation instructions](https://wordpress.org/documentation/article/work-with-themes/).
@@ -65,4 +65,4 @@ Original starter tooling is MIT licensed. Themes installed separately retain the
 
 References: [official extension documentation](https://developer.wordpress.org/playground/developers/local-development/vscode-extension/) · [GitHub templates](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
 
-Supporting documentation, release history, and the starter version are under `tools/`. Packaging tools are downloaded into ignored `tools/.tools/`; archives go to ignored `tools/dist/`. Older root-level `.tools/` and `dist/` folders remain ignored and are not automatically deleted or moved by a pull.
+Supporting documentation is in `docs/`. Release history and the starter version remain under `tools/`. Packaging tools are downloaded into ignored `tools/.tools/`; archives go to ignored `tools/dist/`. Older root-level `.tools/` and `dist/` folders remain ignored and are not automatically deleted or moved by a pull.
