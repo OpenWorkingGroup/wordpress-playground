@@ -8,7 +8,7 @@
 /plugins/*
 !/plugins/.gitkeep
 /themes/*
-!/themes/twentytwentyfive/
+!/themes/.gitkeep
 .DS_Store
 .env
 .env.*

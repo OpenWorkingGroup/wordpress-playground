@@ -7,6 +7,7 @@ Develop plugins and themes together, directly in VS Code. Open the folder and st
 1. Clone this repository, or choose [Use this template](https://github.com/new?template_name=wordpress-playground&template_owner=OpenWorkingGroup) and clone your new project. For an existing clone, use `git pull`.
 2. Open the repository root in VS Code. Install the recommended **WordPress Playground** extension (`WordPressPlayground.wordpress-playground`).
 3. Click **Start Server** in the Playground sidebar. Use its reported address and credentials. For modern components, select a compatible PHP version such as 8.3.
+4. On a fresh checkout, open `/wp-admin/` at that address and choose **Appearance → Themes → Add New**. Install and activate **Twenty Twenty-Five**, or another theme, directly from WordPress.org.
 
 The extension downloads WordPress/PHP on first use, so internet access is required. VS Code and the extension are the only requirements for running the site. Host PHP is needed only for the optional packaging task.
 
@@ -16,12 +17,12 @@ The root is a normal `wp-content` directory:
 plugins/                  # Clone your plugin repositories here
   my-plugin/
 themes/
-  twentytwentyfive/        # Included, unmodified standard WordPress theme
+  twentytwentyfive/        # Installed locally through WordPress; ignored by Git
   my-theme/               # Optional custom theme repository
 .vscode/                  # Extension recommendation and packaging task
 ```
 
-The included Twenty Twenty-Five theme makes the initial site usable without extra setup. The extension's `wp-content` mode hides the themes in its WordPress download, so the starter carries this standard theme. There is no theme configuration to maintain. WordPress core and the database are not committed.
+No theme is bundled or maintained here. The extension’s `wp-content` mode hides the themes in its WordPress download, so a fresh checkout needs the one-time theme installation above. Until then the homepage may report a missing theme; WordPress admin remains accessible. Installed themes stay locally in `themes/` and are updated through WordPress. Core, themes, uploads, and the database are not committed. See [WordPress’s native theme installation instructions](https://wordpress.org/documentation/article/work-with-themes/).
 
 ## Develop plugins together
 
@@ -52,10 +53,12 @@ The extension manages the local database under `~/.wp-now`; uploads live in this
 
 This repository is intended as a **GitHub template** for independent projects. Template-created repositories do not automatically inherit later template updates: `git pull` updates your own repository. Review and copy changes to the few starter files when needed. A direct clone of this repository can pull its updates normally.
 
+Upgrading from v1.0.0 removes the previously tracked Twenty Twenty-Five copy. Reinstall it through WordPress after pulling; preserve any local theme edits before updating.
+
 The earlier v0.4.x framework is superseded. Start a fresh standalone clone for this layout; do not pull it into a live framework submodule and assume automatic migration. Existing generated sites and databases are not migrated or removed.
 
 Validated against extension 0.1.72. It chooses an available port and may listen beyond loopback; use this for local development with synthetic data. Never use production credentials or content here.
 
-Original starter tooling is MIT licensed. The bundled theme and its assets retain their upstream licenses; see [THIRD_PARTY.md](THIRD_PARTY.md). This is an independent starter, not the official Playground project.
+Original starter tooling is MIT licensed. Themes installed separately retain their upstream licenses. This is an independent starter, not the official Playground project.
 
 References: [official extension documentation](https://developer.wordpress.org/playground/developers/local-development/vscode-extension/) · [GitHub templates](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).

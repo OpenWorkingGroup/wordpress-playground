@@ -1,3 +1,11 @@
+# Validation — v1.1.0
+
+Using the installed extension 0.1.72 worker with PHP 8.3 in an isolated empty plugins/themes project: WordPress theme administration returned HTTP 200 without a theme. The native install-theme AJAX action downloaded Twenty Twenty-Five successfully from WordPress.org, and the homepage then returned HTTP 200 with that theme rendered. No custom theme downloader is required. The editor UI itself remains a manual check.
+
+The only folder tasks are component packaging and its WP-CLI prerequisite; no workspace/setup task remains. The theme is ignored by Git.
+
+## Historical v1.0.0 validation
+
 # Starter validation — v1.0.0
 
 Validated on macOS using the installed official WordPress Playground extension 0.1.72's worker, with its default PHP 7.4 and latest WordPress selection, in isolated temporary project directories on port 9427. Existing development servers were not stopped or changed.

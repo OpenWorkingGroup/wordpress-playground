@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.0
+
+- Remove the redundant .code-workspace file; open the folder directly using .vscode recommendations and packaging tasks.
+- Remove the bundled default theme. Install themes through native WordPress Appearance → Themes from WordPress.org.
+- A fresh checkout starts WordPress admin, but requires a one-time theme installation before the homepage renders. Existing v1.0.0 clones must reinstall the removed theme after pulling.
+
 ## v1.0.0 — standalone development starter
 
 - Replace the framework/submodule scaffolding with a directly mounted wp-content project.
