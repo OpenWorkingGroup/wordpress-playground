@@ -10,9 +10,17 @@ The host needs Git, **Node.js 22+**, **PHP 8+ with ZipArchive and curl**, comman
 
 ## 1. Add the framework to your project
 
-Use any existing Git project. There is no requirement to create a new directory, initialize a new repository, or adopt a particular project name. The submodule requires Git; if your project is not under Git, decide separately whether to initialize it.
+Use your chosen project directory. **Git submodules require that directory to belong to a Git repository.** An existing Git project needs no initialization, and no particular directory or project name is required.
 
-From your existing project directory, add the framework once:
+If you are starting in a clean directory that is not already in a Git repository, initialize it once:
+
+```sh
+git init -b main
+```
+
+This creates local Git metadata; it does not create a GitHub repository, make a commit, or push anything. Skip it for an existing Git project. If unsure, `git rev-parse --show-toplevel` displays the containing repository, or reports `not a git repository`. Check that the displayed repository is the one you intend to use.
+
+Then add the framework once:
 
 ```sh
 git submodule add https://github.com/OpenWorkingGroup/wordpress-playground.git tools/wordpress-playground
