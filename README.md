@@ -1,54 +1,61 @@
-# WordPress Playground Framework
+# WordPress Playground development starter
 
-Reusable development tooling for WordPress plugins and themes, maintained by Open Working Group. Projects own their component selection and configuration; this repository supplies shared tools as a **versioned Git submodule**.
+Develop plugins and themes together, directly in VS Code. Open the folder and start the official Playground extension. No framework submodule, setup task, manifest, generated workspace, npm install, or source-copy step is needed to run WordPress.
 
-The official WordPress Playground VS Code extension runs WordPress. This framework prepares a standard WordPress installation with bundled themes and integration copies, generates project-specific VS Code tasks, and packages components using the official WP-CLI `dist-archive` command. It does not start a server, install components into a site, import content, or deploy anything.
+## Start WordPress
 
-## Start here
+1. Clone this repository, or choose [Use this template](https://github.com/new?template_name=wordpress-playground&template_owner=OpenWorkingGroup) and clone your new project. For an existing clone, use `git pull`.
+2. Open the repository root in VS Code. Install the recommended **WordPress Playground** extension (`WordPressPlayground.wordpress-playground`).
+3. Click **Start Server** in the Playground sidebar. Use its reported address and credentials. For modern components, select a compatible PHP version such as 8.3.
 
-- [Add to an existing project](docs/create-workspace.md)
-- [Daily development and packaging](docs/usage.md)
-- [Update or roll back the framework](docs/updates.md)
-- [Architecture, boundaries and limitations](docs/architecture.md)
-- [Validation and contributing](docs/contributing.md)
+The extension downloads WordPress/PHP on first use, so internet access is required. VS Code and the extension are the only requirements for running the site. Host PHP is needed only for the optional packaging task.
 
-Supported host: macOS or Linux (Windows through WSL), Git, Node.js 22+, PHP 8+ with ZipArchive, curl and unzip. Packaging setup also needs PHP's HTTP/Composer dependencies, including curl. Install the official `WordPressPlayground.wordpress-playground` extension in VS Code. Its PHP runtime is separate from the host PHP used for packaging.
-
-Open `wordpress-playground.code-workspace` to work on this framework. For any existing Git project, add the submodule, open its included workspace, and run **Project: Set up**. The task pins the release, creates missing configuration and `sources/`, and prepares WordPress. See the setup guide. Both recommend the required Playground extension before setup. No Python or JavaScript package installation is needed.
-
-## The boundary
+The root is a normal `wp-content` directory:
 
 ```text
-project-workspace/                 # Your project's repository
-├── setup.code-workspace           # Committed setup tasks and extension recommendations
-├── workspace.json                 # Your component definitions
-├── tools/wordpress-playground/    # This repository, pinned submodule
-├── sources/                      # Separate component repos/submodules
-├── .playground/                  # Ignored integration copies and local files
-├── dist/                         # Ignored ZIP artifacts and checksums
-└── wordpress.generated.code-workspace
+plugins/                  # Clone your plugin repositories here
+  my-plugin/
+themes/
+  twentytwentyfive/        # Included, unmodified standard WordPress theme
+  my-theme/               # Optional custom theme repository
+.vscode/                  # Extension recommendation and packaging task
 ```
 
-A site's skeleton/configuration and reviewed WordPress WXR exports belong in a **separate site repository**, not in this component-development workspace or the framework. Component source remains independently versioned. No commercial theme, plugin implementation, personal path, credentials, site database, uploads or project-specific shortcuts are shipped here.
+The included Twenty Twenty-Five theme makes the initial site usable without extra setup. The extension's `wp-content` mode hides the themes in its WordPress download, so the starter carries this standard theme. There is no theme configuration to maintain. WordPress core and the database are not committed.
 
-## Minimal commands
+## Develop plugins together
 
-Run these from your project workspace after following the creation guide:
+From the repository root:
 
 ```sh
-node tools/wordpress-playground/scripts/setup-project.mjs
+git clone YOUR_PLUGIN_REPOSITORY_URL plugins/my-plugin
+git clone YOUR_OTHER_PLUGIN_REPOSITORY_URL plugins/my-other-plugin
 ```
 
-Open `wordpress.generated.code-workspace`. Start WordPress through the extension sidebar. Select a PHP version compatible with your components (8.3 is a reasonable starting point). Use **Terminal → Run Task** or **Tasks: Run Task** in the Command Palette to package the listed components.
+Use **Plugins → Installed Plugins** to activate them. Edit these files directly and reload the site. There is no synchronization task. If a newly cloned component is not discovered immediately, stop and start Playground once. Run any build commands required by each component inside its own repository.
 
-## Versioning
+For a custom theme, clone into `themes/my-theme`, then activate it in **Appearance → Themes**. The plugin/theme entry files must be directly inside that folder; repositories with a nested build output need their own build/layout adjustment.
 
-Current framework release: `v0.4.0`. Workspace configuration schema: `1`.
+Component clones are ignored by the starter repository and keep their own Git history. Commit/push inside each component repository. New projects should clone components explicitly; a starter pull does not fetch their repositories. You may choose submodules yourself if you want the project to record exact component revisions, but they are not required.
 
-This is a framework/module repository, **not a GitHub template repository**. Projects pin its commit and review upgrades explicitly. A future starter template may copy only project-owned configuration, never the framework implementation.
+## Package for installation on another site
 
-## License and upstream tools
+Add a reviewed `.distignore` to the component root; `tools/packaging/distignore.example` is a starting point. Keep runtime assets and required vendor files.
 
-Original framework code and documentation are MIT licensed. Downloaded WP-CLI and its packages retain their own licenses and are not included in Git. This project is not the official WordPress Playground project and does not imply WordPress endorsement.
+Choose **Terminal → Run Task → Package component**, select plugin/theme, and enter its folder (for example `plugins/my-plugin`). The task prepares pinned WP-CLI tooling automatically on first use and writes an installable ZIP plus checksum under `dist/`.
 
-Official references: [Playground VS Code extension](https://github.com/WordPress/playground-tools/tree/trunk/packages/vscode-extension), [WP-CLI distribution archives](https://developer.wordpress.org/cli/commands/dist-archive/).
+Packaging requires host PHP 8+ with ZipArchive and curl, command-line curl, and a POSIX shell (macOS/Linux, or Windows through WSL). It uses official WP-CLI `dist-archive`; it does not start another server or deploy anything. Install the ZIP manually on the separate SYVLocal integration site.
+
+## Persistence and updates
+
+The extension manages the local database under `~/.wp-now`; uploads live in this mounted folder. Restarting is not a reset. Moving the project can select different database storage. Use native WordPress Export/Import for starter content; WXR is not a complete database/files backup.
+
+This repository is intended as a **GitHub template** for independent projects. Template-created repositories do not automatically inherit later template updates: `git pull` updates your own repository. Review and copy changes to the few starter files when needed. A direct clone of this repository can pull its updates normally.
+
+The earlier v0.4.x framework is superseded. Start a fresh standalone clone for this layout; do not pull it into a live framework submodule and assume automatic migration. Existing generated sites and databases are not migrated or removed.
+
+Validated against extension 0.1.72. It chooses an available port and may listen beyond loopback; use this for local development with synthetic data. Never use production credentials or content here.
+
+Original starter tooling is MIT licensed. The bundled theme and its assets retain their upstream licenses; see [THIRD_PARTY.md](THIRD_PARTY.md). This is an independent starter, not the official Playground project.
+
+References: [official extension documentation](https://developer.wordpress.org/playground/developers/local-development/vscode-extension/) · [GitHub templates](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).

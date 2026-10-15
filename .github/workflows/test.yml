@@ -1,24 +1,12 @@
-name: Framework tests
+name: Starter checks
 "on": [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
 jobs:
-  test:
+  check:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version: 22
-      - name: Install host dependencies
-        run: sudo apt-get update && sudo apt-get install -y php-cli php-zip php-curl unzip
-      - name: Set up pinned packaging tools
-        run: sh scripts/setup-packaging.sh
-      - name: Check scripts and run tests
-        run: |
-          php -l scripts/archive-check.php
-          sh -n scripts/setup-packaging.sh
-          sh -n scripts/prepare-wordpress.sh
-          sh -n scripts/package-extension.sh
-          node --check scripts/workspace.mjs
-          npm test
+      - run: sudo apt-get update && sudo apt-get install -y php-cli php-zip php-curl unzip
+      - run: sh scripts/setup-packaging.sh
+      - run: php -l scripts/archive-check.php && sh tests/packaging.sh

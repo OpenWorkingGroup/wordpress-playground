@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.0.0 — standalone development starter
+
+- Replace the framework/submodule scaffolding with a directly mounted wp-content project.
+- Include plugins/ and unmodified Twenty Twenty-Five 1.5 so cloning and starting the official extension produces a usable default site.
+- Remove manifests, setup scripts, generated workspaces, synchronization, and Node/Python requirements.
+- Keep a single optional VS Code packaging task using native WP-CLI with automatic tool setup.
+- Enable GitHub template usage; component repositories remain independent.
+- Breaking layout change: existing v0.4.x framework projects should use a fresh standalone starter. No site/database migration is performed.
+
 ## v0.4.0
 
 - Install into an existing Git project with one submodule-add command followed by the included Project: Set up task.
