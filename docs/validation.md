@@ -1,0 +1,12 @@
+# Foundation validation — v0.1.0
+
+Validated locally on macOS with Python 3, PHP 8.5.11, WP-CLI 2.12.0 and dist-archive 3.1.0.
+
+- All 10 automated tests pass: preparation/refresh/removal, content preservation, task generation, invalid slugs, duplicate identities, missing sources, unmanaged destinations, symlink rejection, required baseline theme, real plugin/theme archives and invalid package inputs.
+- Fresh toolchain download matches the pinned WP-CLI SHA-256. Repeated setup reuses the verified installation.
+- A separate temporary project successfully followed the creation flow: framework submodule, baseline theme submodule, copied project manifest/ignore file, validation, integration preparation, generated workspace and packaging setup.
+- The official Twenty Twenty-Five source packaged successfully with the native command and produced a checksum sidecar. No theme code is included in this repository.
+- PHP and shell syntax checks pass. The publication file list excludes downloaded tools, runtime data, artifacts, licensed components and local project identifiers.
+- The retired CLI server was stopped before its implementation was removed. Existing component-development and site workspaces were not migrated.
+
+The GitHub workflow is provided for Linux verification; its result must be checked separately after push. The creation flow was rehearsed without starting a new VS Code extension instance. Extension startup, component activation and persistence in a user's newly created workspace remain the documented manual acceptance steps. No production qualification or remote WordPress deployment is claimed.
