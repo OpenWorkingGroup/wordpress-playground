@@ -8,5 +8,5 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - run: sudo apt-get update && sudo apt-get install -y php-cli php-zip php-curl unzip
-      - run: sh tooling/scripts/setup-packaging.sh
-      - run: php -l tooling/scripts/archive-check.php && sh tooling/tests/packaging.sh
+      - run: sh tools/scripts/setup-packaging.sh
+      - run: php -l tools/scripts/archive-check.php && sh tools/tests/packaging.sh

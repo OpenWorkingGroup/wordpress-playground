@@ -5,7 +5,7 @@
       "label": "Package component",
       "type": "process",
       "command": "sh",
-      "args": ["${workspaceFolder}/tooling/scripts/package-extension.sh", "${input:kind}", "${workspaceFolder}/${input:source}", "${workspaceFolder}/tooling/dist"],
+      "args": ["${workspaceFolder}/tools/scripts/package-extension.sh", "${input:kind}", "${workspaceFolder}/${input:source}", "${workspaceFolder}/tools/dist"],
       "dependsOn": ["Packaging: Prepare WP-CLI"],
       "problemMatcher": []
     },
@@ -13,7 +13,7 @@
       "label": "Packaging: Prepare WP-CLI",
       "type": "process",
       "command": "sh",
-      "args": ["${workspaceFolder}/tooling/scripts/setup-packaging.sh"],
+      "args": ["${workspaceFolder}/tools/scripts/setup-packaging.sh"],
       "problemMatcher": []
     }
   ],

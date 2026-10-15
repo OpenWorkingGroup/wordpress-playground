@@ -1,5 +1,5 @@
-/tooling/.tools/
-/tooling/dist/
+/tools/.tools/
+/tools/dist/
 /uploads/
 /database/
 /upgrade/

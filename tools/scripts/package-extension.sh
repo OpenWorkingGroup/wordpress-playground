@@ -17,7 +17,7 @@ php_bin=${PHP_BIN:-php}
 export WP_CLI_PACKAGES_DIR="$root/.tools/wp-cli/packages"
 export WP_CLI_CACHE_DIR="$root/.tools/wp-cli/cache"
 export WP_CLI_CONFIG_PATH="$root/packaging/wp-cli.yml"
-[ -f "$root/.tools/wp-cli/wp-cli.phar" ] || { echo 'Run tooling/scripts/setup-packaging.sh first' >&2; exit 2; }
+[ -f "$root/.tools/wp-cli/wp-cli.phar" ] || { echo 'Run tools/scripts/setup-packaging.sh first' >&2; exit 2; }
 run=$(mktemp -d "$output/$slug-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
 cd "$root/packaging"
 "$php_bin" -d error_reporting=22527 "$root/.tools/wp-cli/wp-cli.phar" dist-archive "$source" "$run/" --format=zip --plugin-dirname="$slug"
