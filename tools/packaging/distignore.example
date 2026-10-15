@@ -1,0 +1,10 @@
+.git
+.github
+.gitignore
+.distignore
+.DS_Store
+**/.DS_Store
+node_modules
+.env
+.env.*
+# Add project-specific exclusions. Keep vendor/ and built runtime assets when needed.

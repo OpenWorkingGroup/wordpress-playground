@@ -1,0 +1,9 @@
+/.playground/
+/dist/
+/wordpress.generated.code-workspace
+/sources/*
+# Explicitly added Git submodules remain tracked even under ignored source paths.
+.DS_Store
+.env
+.env.*
+*.log

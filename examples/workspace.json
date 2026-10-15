@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "components": [
+    {
+      "type": "theme",
+      "slug": "twentytwentyfive",
+      "name": "Baseline theme",
+      "path": "sources/twentytwentyfive"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+name: Framework tests
+"on": [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install host dependencies
+        run: sudo apt-get update && sudo apt-get install -y php-cli php-zip php-curl unzip
+      - name: Set up pinned packaging tools
+        run: sh scripts/setup-packaging.sh
+      - name: Check scripts and run tests
+        run: |
+          php -l scripts/archive-check.php
+          sh -n scripts/setup-packaging.sh
+          sh -n scripts/package-extension.sh
+          python3 -m unittest discover -s tests -v
