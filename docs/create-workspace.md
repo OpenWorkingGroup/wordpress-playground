@@ -1,80 +1,80 @@
 # Create a component-development workspace
 
-These commands create a new project repository. Choose a directory that does not already exist. Do not run them inside the framework checkout or an existing WordPress site.
+No baseline theme repository or theme configuration is required. Native WP-CLI downloads a standard WordPress installation, including its bundled themes. The VS Code Playground extension runs that installation. An empty component list is valid; add only the plugins or themes you actually develop.
 
 ## 1. Create the project and pin the framework
+
+Choose a new directory, separate from the framework checkout and any existing site:
 
 ```sh
 mkdir my-wordpress-workspace
 cd my-wordpress-workspace
 git init -b main
 git submodule add https://github.com/OpenWorkingGroup/wordpress-playground.git tools/wordpress-playground
-git -C tools/wordpress-playground checkout v0.1.0
+git -C tools/wordpress-playground checkout v0.2.0
 cp tools/wordpress-playground/examples/workspace.gitignore .gitignore
 cp tools/wordpress-playground/examples/workspace.json workspace.json
-mkdir sources
 ```
 
-The framework does not create or push your project's GitHub repository. Choose its name and visibility independently.
+The starter configuration is simply:
 
-## 2. Add a baseline theme
+```json
+{"schema": 1, "components": []}
+```
 
-Playground's `wp-content` mode mounts the integration directory over core's bundled themes. A clean database therefore needs its WordPress version's default theme present. The starter uses Twenty Twenty-Five, which was the default in the inspected extension cache. When selecting another WordPress version, verify its required default theme and adjust the configuration.
+## 2. Prepare standard WordPress and open VS Code
 
 ```sh
-git submodule add --force https://github.com/WordPress/twentytwentyfive.git sources/twentytwentyfive
+sh tools/wordpress-playground/scripts/setup-packaging.sh
+python3 tools/wordpress-playground/scripts/workspace.py prepare workspace.json
+code wordpress.generated.code-workspace
 ```
 
-The project records the exact theme commit added. You can substitute an already-installed theme's source directory; no theme code is embedded in the framework. For child themes, include their parent as a separate component with the directory slug required by the child's `Template` header.
+If `code` is unavailable, use VS Code's **File → Open Workspace from File**. The generated workspace puts `.playground/wordpress` first. Open the official Playground sidebar, select a compatible PHP version such as 8.3, and start its WordPress server. Use its reported address and credentials.
 
-## 3. Add your plugins/themes
+Preparation downloads WordPress only when no installation exists. Subsequent preparation preserves core, bundled themes, installed components, uploads and settings. `wordpress_version` is an optional manifest field for a specific initial numeric core release; the default is `latest`. Changing that field does not upgrade an existing installation. In full WordPress mode the mounted core files determine the WordPress version, not the sidebar's download selection.
 
-Clone each source repository under `sources/` (or use `git submodule add --force URL sources/NAME` to record an exact commit). The example `.gitignore` ignores ordinary source clones while Git still tracks explicitly added submodules. Commit code changes from the component's own repository.
+## 3. Add only the components you develop
 
-Edit `workspace.json`. Paths are relative to this project directory and point to the actual plugin/theme root, which may be inside its repository:
+Clone source repositories under `sources/`, or add them as submodules to record exact commits:
+
+```sh
+mkdir -p sources
+# Substitute your actual repository URL and directory name:
+git submodule add --force YOUR_PLUGIN_REPOSITORY_URL sources/my-plugin
+```
+
+Edit `workspace.json` to identify the actual plugin root:
 
 ```json
 {
   "schema": 1,
   "components": [
-    {"type": "theme", "slug": "twentytwentyfive", "name": "Baseline theme", "path": "sources/twentytwentyfive"},
-    {"type": "plugin", "slug": "example-plugin", "name": "Example Plugin", "path": "sources/example-plugin/plugin"},
-    {"type": "theme", "slug": "example-theme", "name": "Example Theme", "path": "sources/example-theme"}
+    {"type": "plugin", "slug": "my-plugin", "name": "My Plugin", "path": "sources/my-plugin"}
   ]
 }
 ```
 
-The last two entries are illustrative; add them only after those sources exist. The framework accepts any conventional plugin or theme folder. A repository containing several plugins needs one entry per plugin folder. Existing sibling checkouts can be referenced with `../`; a collaborator must reproduce that layout. Prefer `sources/` submodules for portable project configuration.
+Use `"type": "theme"` only when you are developing a theme. Paths are relative to the workspace; repositories containing multiple components need one entry per component root. Source code remains independently versioned. For child-theme development, install its required parent theme normally or include the parent source explicitly.
 
-## 4. Prepare and open the workspace
+Stop the extension server, run `prepare` again, reopen the generated workspace if component folders/tasks changed, then restart. Activate the components manually in WordPress. Bundled default themes need no manifest entry. The framework refuses to replace unmanaged installed components with the same slug; resolve such conflicts deliberately before preparing.
 
-```sh
-python3 tools/wordpress-playground/scripts/workspace.py prepare workspace.json
-sh tools/wordpress-playground/scripts/setup-packaging.sh
-code wordpress.generated.code-workspace
-```
-
-If `code` is unavailable, use VS Code's **File → Open Workspace from File**. Do not open the framework folder as your WordPress project.
-
-The generated workspace puts `.playground/wp-content` **first**, named WordPress. The installed extension inspected during development serves only the first folder. Other folders expose your project and component sources for editing; they are not independently mounted.
-
-In the Playground sidebar, select PHP 8.3 or another compatible version, then **Start WordPress Server**. Changing the version can itself start the server. Use the address it reports. Install/activate your selected components manually through WordPress administration; preparation copies files but does not activate them. The extension's initial local credentials are usually `admin` / `password`; follow the extension's reported credentials if different.
-
-The extension manages its own persistent database under `~/.wp-now`; see [architecture](architecture.md). A separate site workspace gets a separate extension instance/window. No CLI server is created here.
-
-## 5. Commit the project, not generated data
+## 4. Commit project configuration
 
 ```sh
-git add .gitignore .gitmodules workspace.json tools/wordpress-playground sources/twentytwentyfive
+git add .gitignore .gitmodules workspace.json tools/wordpress-playground
 git commit -m "Create component development workspace"
 ```
 
-Add other component submodule references deliberately. Never force-add `.playground`, `.tools`, `dist`, database files or credentials. The generated VS Code file is ignored; regenerate it from the committed manifest after cloning:
+Add any component submodule references deliberately. The example ignore file excludes ordinary source clones; explicitly added submodules remain tracked. Never force-add `.playground`, `.tools`, `dist`, databases or credentials. The generated VS Code file is ignored and reproducible.
+
+After cloning this project on another machine:
 
 ```sh
 git clone --recurse-submodules YOUR_PROJECT_REPOSITORY
 cd YOUR_PROJECT_DIRECTORY
+sh tools/wordpress-playground/scripts/setup-packaging.sh
 python3 tools/wordpress-playground/scripts/workspace.py prepare workspace.json
 ```
 
-Run packaging setup on each new machine. Neither the framework nor these instructions push your workspace remotely.
+You choose the project's GitHub name and visibility independently. None of these commands pushes the workspace or changes a separate site environment. See [updates](updates.md) for migration from v0.1.0.

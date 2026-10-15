@@ -27,6 +27,9 @@ class FrameworkTests(unittest.TestCase):
         (self.theme/'index.php').write_text('<?php // fixture')
         for path in (self.plugin, self.theme):
             (path/'.distignore').write_text('.distignore\n.env\nnode_modules\n.git\n')
+        core = self.project/'.playground/wordpress'
+        (core/'wp-content').mkdir(parents=True)
+        (core/'wp-load.php').write_text('<?php // existing core fixture')
         self.manifest = self.project/'workspace.json'
         self.config = {'schema':1,'components':[
             {'type':'theme','slug':'baseline','path':'sources/baseline'},
@@ -41,7 +44,7 @@ class FrameworkTests(unittest.TestCase):
 
     def test_prepare_refresh_and_remove_preserve_content(self):
         workspace.prepare(self.manifest)
-        content = self.project/'.playground/wp-content'
+        content = self.project/'.playground/wordpress/wp-content'
         (content/'uploads').mkdir()
         (content/'uploads/keep.txt').write_text('keep')
         (content/'plugins/unmanaged').mkdir()
@@ -61,7 +64,7 @@ class FrameworkTests(unittest.TestCase):
     def test_tasks_use_source_and_first_runtime_folder(self):
         workspace.prepare(self.manifest)
         data=json.loads((self.project/'wordpress.generated.code-workspace').read_text())
-        self.assertEqual(data['folders'][0]['path'],'.playground/wp-content')
+        self.assertEqual(data['folders'][0]['path'],'.playground/wordpress')
         tasks=data['tasks']['tasks']
         package=next(t for t in tasks if t['label']=='Package plugin: example')
         self.assertIn('${workspaceFolder:Workspace}/sources/example',package['args'])
@@ -70,7 +73,7 @@ class FrameworkTests(unittest.TestCase):
     def test_invalid_slug_does_not_create_runtime(self):
         self.config['components'][1]['slug']='../../escape';self.save()
         with self.assertRaises(ValueError): workspace.prepare(self.manifest)
-        self.assertFalse((self.project/'.playground').exists())
+        self.assertFalse((self.project/'.playground/managed-components.json').exists())
 
     def test_duplicate_identity_rejected(self):
         self.config['components'].append(self.config['components'][1]);self.save()
@@ -80,10 +83,10 @@ class FrameworkTests(unittest.TestCase):
         workspace.prepare(self.manifest)
         self.config['components'][1]['path']='missing';self.save()
         with self.assertRaises(ValueError):workspace.prepare(self.manifest)
-        self.assertTrue((self.project/'.playground/wp-content/plugins/example/example.php').exists())
+        self.assertTrue((self.project/'.playground/wordpress/wp-content/plugins/example/example.php').exists())
 
     def test_unmanaged_destination_is_not_overwritten(self):
-        target=self.project/'.playground/wp-content/plugins/example';target.mkdir(parents=True)
+        target=self.project/'.playground/wordpress/wp-content/plugins/example';target.mkdir(parents=True)
         (target/'keep').write_text('keep')
         with self.assertRaises(ValueError):workspace.prepare(self.manifest)
         self.assertEqual((target/'keep').read_text(),'keep')
@@ -92,11 +95,19 @@ class FrameworkTests(unittest.TestCase):
         workspace.prepare(self.manifest)
         (self.plugin/'linked').symlink_to(self.theme, target_is_directory=True)
         with self.assertRaises(ValueError):workspace.prepare(self.manifest)
-        self.assertTrue((self.project/'.playground/wp-content/plugins/example/example.php').exists())
+        self.assertTrue((self.project/'.playground/wordpress/wp-content/plugins/example/example.php').exists())
 
-    def test_theme_required_for_integration(self):
+    def test_plugin_only_workspace_preserves_bundled_theme(self):
+        bundled=self.project/'.playground/wordpress/wp-content/themes/bundled'
+        bundled.mkdir(parents=True);(bundled/'style.css').write_text('core theme')
         self.config['components']=[self.config['components'][1]];self.save()
-        with self.assertRaises(ValueError):workspace.prepare(self.manifest)
+        workspace.prepare(self.manifest)
+        self.assertEqual((bundled/'style.css').read_text(),'core theme')
+
+    def test_empty_workspace_accepted(self):
+        self.config['components']=[];self.save()
+        workspace.prepare(self.manifest)
+        self.assertTrue((self.project/'wordpress.generated.code-workspace').exists())
 
     def package(self,kind,source,slug='package-example'):
         return subprocess.run(['sh',str(ROOT/'scripts/package-extension.sh'),kind,str(source),str(self.project/'artifacts'),slug],text=True,capture_output=True)

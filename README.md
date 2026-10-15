@@ -2,7 +2,7 @@
 
 Reusable development tooling for WordPress plugins and themes, maintained by Open Working Group. Projects own their component selection and configuration; this repository supplies shared tools as a **versioned Git submodule**.
 
-The official WordPress Playground VS Code extension runs WordPress. This framework prepares integration copies, generates project-specific VS Code tasks, and packages components using the official WP-CLI `dist-archive` command. It does not start a server, install components into a site, import content, or deploy anything.
+The official WordPress Playground VS Code extension runs WordPress. This framework prepares a standard WordPress installation with bundled themes and integration copies, generates project-specific VS Code tasks, and packages components using the official WP-CLI `dist-archive` command. It does not start a server, install components into a site, import content, or deploy anything.
 
 ## Start here
 
@@ -33,16 +33,16 @@ A site's skeleton/configuration and reviewed WordPress WXR exports belong in a *
 Run these from your project workspace after following the creation guide:
 
 ```sh
+sh tools/wordpress-playground/scripts/setup-packaging.sh
 python3 tools/wordpress-playground/scripts/workspace.py validate workspace.json
 python3 tools/wordpress-playground/scripts/workspace.py prepare workspace.json
-sh tools/wordpress-playground/scripts/setup-packaging.sh
 ```
 
 Open `wordpress.generated.code-workspace`. Start WordPress through the extension sidebar. Select a PHP version compatible with your components (8.3 is a reasonable starting point). Use **Terminal → Run Task** or **Tasks: Run Task** in the Command Palette to package the listed components.
 
 ## Versioning
 
-Initial framework release: `v0.1.0`. Workspace configuration schema: `1`.
+Current framework release: `v0.2.0`. Workspace configuration schema: `1`.
 
 This is a framework/module repository, **not a GitHub template repository**. Projects pin its commit and review upgrades explicitly. A future starter template may copy only project-owned configuration, never the framework implementation.
 

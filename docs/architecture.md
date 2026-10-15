@@ -10,8 +10,11 @@ A component workspace's generated `.code-workspace` is derived from `workspace.j
 
 ## Playground extension behavior
 
-Installed extension 0.1.72 was inspected during foundation work. It recognizes `plugins/` and `themes/` as wp-content mode, mounts that folder, and stores its database separately in a project-path-derived directory under `~/.wp-now/wp-content`. Uploaded files can reside in the mounted wp-content folder. The framework's `.playground` folder is therefore **not a complete site backup**. Renaming/moving the first workspace folder can select a different extension-managed database.
+The framework uses the extension's full **wordpress** mode. Native WP-CLI downloads normal WordPress core and bundled themes into `.playground/wordpress` on first preparation. No default theme source is a project dependency. Empty and plugin-only workspaces are supported.
 
+The extension initializes the installation and manages SQLite persistence. In inspected extension 0.1.72, database storage may be under a path-derived `~/.wp-now/wp-content` directory while site files/uploads live in the mounted installation. Do not assume `.playground` alone is a complete backup; inspect the actual database location before backing up or migrating. Renaming the first workspace folder can select different extension storage.
+
+The extension's empty-folder playground mode supplies default themes but uses a shared `playground` storage directory in the inspected version. It is not used here because separate project workspaces must remain isolated.
 The extension serves the first workspace folder, selects an available port starting at 8881 and initially defaults to PHP 7.4. Select a compatible PHP version explicitly; some plugins require 8+. Multi-root source folders do not automatically become mounts, and external symlink support is limited. Explicit copies avoid depending on that behavior.
 
 The inspected extension binds its HTTP server without a loopback-only host setting and exposes no contributed host/port settings. Its server can be reachable on other network interfaces depending on host firewall/network settings. Use trusted local development environments with synthetic data; do not expose production credentials/data. This framework does not modify the extension or claim to enforce loopback binding.

@@ -15,5 +15,6 @@ jobs:
         run: |
           php -l scripts/archive-check.php
           sh -n scripts/setup-packaging.sh
+          sh -n scripts/prepare-wordpress.sh
           sh -n scripts/package-extension.sh
           python3 -m unittest discover -s tests -v

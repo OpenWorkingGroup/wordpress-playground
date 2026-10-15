@@ -49,3 +49,7 @@ GitHub Dependabot supports `gitsubmodule`; it follows the latest commit on the c
 `v0.1.0` introduces schema 1. There are no automatic migrations or update schedulers.
 
 References: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template and https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference .
+
+## Migrating v0.1.0 to v0.2.0
+
+v0.2.0 removes the baseline-theme dependency and uses a normal WordPress installation. Remove baseline-only theme entries/submodules from your project if you do not develop them. Keep any actual theme-development entries. The generated first folder changes from `.playground/wp-content` to `.playground/wordpress`; this initializes a separate installation and may select a new extension database. Existing v0.1.0 files/database are not deleted or migrated. Export any content you need through native WordPress tools and back up before switching; import into the new installation deliberately. Run setup before prepare, then reopen the generated workspace.

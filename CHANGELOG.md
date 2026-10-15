@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 — 2026-10-15
+
+- Remove the mandatory baseline theme from configuration, preparation and the creation guide.
+- Prepare standard WordPress core with bundled themes using native WP-CLI; run it through the extension’s full WordPress mode.
+- Accept empty and plugin-only workspaces; retain optional theme-development/packaging support.
+- Runtime folder changes to `.playground/wordpress`; see docs/updates.md before migrating an existing workspace.
+
 ## 0.1.0 — 2026-10-15
 
 - Introduce project-owned workspace schema 1 and generated multi-root VS Code tasks.

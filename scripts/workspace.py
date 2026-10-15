@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import subprocess
 import tempfile
 
 FRAMEWORK = Path(__file__).resolve().parents[1]
@@ -58,13 +59,21 @@ def copy_source(source, destination):
 
 def prepare(manifest):
     project, config, components = read_config(manifest)
-    if not any(c['type'] == 'theme' for c in components):
-        raise ValueError('Include a default/baseline theme: wp-content mode hides bundled core themes')
     runtime = project / '.playground'
     if runtime.is_symlink():
         raise ValueError('Runtime directory must not be a symlink')
     runtime.mkdir(exist_ok=True)
-    content = runtime / 'wp-content'
+    wordpress = runtime / 'wordpress'
+    if wordpress.is_symlink():
+        raise ValueError('WordPress installation must not be a symlink')
+    if not wordpress.exists():
+        version = config.get('wordpress_version', 'latest')
+        if not isinstance(version, str) or not re.fullmatch(r'latest|[0-9]+(?:\.[0-9]+)*', version):
+            raise ValueError('wordpress_version must be latest or a numeric release')
+        subprocess.run(['sh', str(FRAMEWORK/'scripts/prepare-wordpress.sh'), str(wordpress), version], check=True)
+    elif not (wordpress/'wp-load.php').is_file():
+        raise ValueError('Incomplete WordPress installation; inspect it before retrying')
+    content = wordpress / 'wp-content'
     for path in [content, content / 'plugins', content / 'themes']:
         if path.is_symlink():
             raise ValueError('Integration directories must not be symlinks')
@@ -108,7 +117,7 @@ def write_vscode(project, components, manifest_name):
                   args=[tool+'/scripts/setup-packaging.sh'], problemMatcher=[]),
              dict(label='Workspace: Refresh copies (stop Playground first)', type='process', command='python3',
                   args=[tool+'/scripts/workspace.py','prepare',base+'/'+manifest_name], problemMatcher=[])]
-    folders = [dict(name='WordPress', path='.playground/wp-content'), dict(name='Workspace', path='.')]
+    folders = [dict(name='WordPress', path='.playground/wordpress'), dict(name='Workspace', path='.')]
     for c in components:
         label = c.get('name', c['slug'])
         folders.append(dict(name=f"{label} ({c['type']})", path=c['path']))
@@ -132,7 +141,7 @@ def main():
         else:
             _, _, components = read_config(args.manifest)
             print(f'Valid workspace: {len(components)} components')
-    except (ValueError, OSError, KeyError, TypeError) as exc:
+    except (ValueError, OSError, KeyError, TypeError, subprocess.CalledProcessError) as exc:
         parser.exit(1, f'Error: {exc}\n')
 
 

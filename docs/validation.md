@@ -1,3 +1,13 @@
+# Validation — v0.2.0
+
+All 11 local automated tests pass, including empty and plugin-only workspaces and preservation of bundled themes. A fresh empty workspace downloaded WordPress 7.1.3 with its bundled themes through native WP-CLI and generated the full-installation workspace successfully. Repeated preparation preserved the installation. The download command allows 512 MB for archive extraction. Shell syntax checks pass.
+
+VS Code extension startup and persistence for the new full-installation path still require manual acceptance. No existing user site was changed. See [updates](updates.md) before switching an existing v0.1.0 workspace.
+
+## Historical validation — v0.1.0
+
+This record describes the superseded baseline-theme design.
+
 # Foundation validation — v0.1.0
 
 Validated locally on macOS with Python 3, PHP 8.5.11, WP-CLI 2.12.0 and dist-archive 3.1.0.
